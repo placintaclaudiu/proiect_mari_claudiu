@@ -1,7 +1,12 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using proiect_mari_claudiu.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<proiect_mari_claudiuContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("proiect_mari_claudiuContext") ?? throw new InvalidOperationException("Connection string 'proiect_mari_claudiuContext' not found.")));
 
 var app = builder.Build();
 
