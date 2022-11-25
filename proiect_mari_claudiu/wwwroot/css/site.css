@@ -14,5 +14,36 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+   background-color:wheat;
+    
+}
+.display-4{
+    color:white;
+    position:absolute;
+    font-style:italic;
+    font-weight:900;
+}
+
+.text-center {
+    background-image: url('../imagini/poza_mariii.jpg');
+    background-color: #cccccc;
+    height: 1000px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+}
+.descriere {
+    color: white;
+    font-style: italic;
+    font-weight: bold;
+}
+.table{
+    color:maroon;
+    position:absolute;
+    font-size:16px;
+    font-style:italic;
+    background-color:grey;
 }
