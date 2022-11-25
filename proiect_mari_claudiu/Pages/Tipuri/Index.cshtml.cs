@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using proiect_mari_claudiu.Data;
 using proiect_mari_claudiu.Models;
+using proiect_mari_claudiu.Models.ViewModels;
 
 namespace proiect_mari_claudiu.Pages.Tipuri
 {
@@ -19,14 +21,41 @@ namespace proiect_mari_claudiu.Pages.Tipuri
             _context = context;
         }
 
-        public IList<Tip> Tip { get;set; } = default!;
+        public IList<Tip> Tip { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public TipIndexData TipData { get; set; }
+        public int TipID { get; set; }
+        public int MasinaID { get; set; }
+
+        public async Task OnGetAsync(int? id, int? masinaID)
         {
-            if (_context.Tip != null)
+            TipData = new TipIndexData();
+            TipData.Tipuri = await _context.Tip
+            .Include(i => i.TipMasini)
+            .ThenInclude(c => c.Masina)
+            .OrderBy(i => i.NumeTip)
+            .ToListAsync();
+            if (id != null)
             {
-                Tip = await _context.Tip.ToListAsync();
+                TipID = id.Value;
+                Tip tip = TipData.Tipuri
+                .Where(i => i.ID == id.Value).Single();
+                TipData.TipMasini = tip.TipMasini;
             }
+
+
+            /*  
+              public async Task OnGetAsync()
+              {
+                  if (_context.Tip != null)
+                  {
+                      Tip = await _context.Tip.ToListAsync();
+                  }
+              }
+            */
+
+
+
         }
     }
 }

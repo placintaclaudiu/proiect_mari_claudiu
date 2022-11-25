@@ -21,5 +21,9 @@ namespace proiect_mari_claudiu.Data
         public DbSet<proiect_mari_claudiu.Models.Model> Model { get; set; }
 
         public DbSet<proiect_mari_claudiu.Models.Tip> Tip { get; set; }
+
+        public DbSet<proiect_mari_claudiu.Models.Client> Client { get; set; }
+
+        public DbSet<proiect_mari_claudiu.Models.Inchiriere> Inchiriere { get; set; }
     }
 }

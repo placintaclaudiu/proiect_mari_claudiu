@@ -1,12 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using proiect_mari_claudiu.Data;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+   policy.RequireRole("Admin"));
+});
+
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Masini");
+    options.Conventions.AllowAnonymousToPage("/Masini/Index");
+    options.Conventions.AllowAnonymousToPage("/Masini/Details");
+    options.Conventions.AuthorizeFolder("/Clienti", "AdminPolicy");
+
+});
+
 builder.Services.AddDbContext<proiect_mari_claudiuContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("proiect_mari_claudiuContext") ?? throw new InvalidOperationException("Connection string 'proiect_mari_claudiuContext' not found.")));
+
+builder.Services.AddDbContext<LibraryIdentityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("proiect_mari_claudiuContext") ?? throw new InvalidOperationException("Connection string 'proiect_mari_claudiuContext' not found.")));
+
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<LibraryIdentityContext>();
 
 var app = builder.Build();
 
@@ -22,6 +46,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 

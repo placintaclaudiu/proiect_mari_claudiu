@@ -26,9 +26,13 @@ namespace proiect_mari_claudiu.Pages.Masini
 
         public int TipID { get; set; }
 
-        public async Task OnGetAsync(int? id, int? tipID)
+        public string CurrentFilter { get; set; }
+
+        public async Task OnGetAsync(int? id, int? tipID, string searchString)
         {
             MasinaD = new MasinaData();
+
+            CurrentFilter = searchString;
 
             MasinaD.Masini = await _context.Masina
             .Include(b => b.Furnizor)
@@ -38,6 +42,12 @@ namespace proiect_mari_claudiu.Pages.Masini
             .AsNoTracking()
             .OrderBy(b => b.Denumire)
             .ToListAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                MasinaD.Masini = MasinaD.Masini.Where(s => s.Denumire.Contains(searchString));
+            }
+
             if (id != null)
             {
                 MasinaID = id.Value;

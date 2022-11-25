@@ -22,6 +22,35 @@ namespace proiect_mari_claudiu.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("proiect_mari_claudiu.Models.Client", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Adresa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nume")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prenume")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Client");
+                });
+
             modelBuilder.Entity("proiect_mari_claudiu.Models.Furnizor", b =>
                 {
                     b.Property<int>("ID")
@@ -37,6 +66,35 @@ namespace proiect_mari_claudiu.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Furnizor");
+                });
+
+            modelBuilder.Entity("proiect_mari_claudiu.Models.Inchiriere", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("ClientID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataPreluare")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataReturnare")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MasinaID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
+
+                    b.HasIndex("MasinaID");
+
+                    b.ToTable("Inchiriere");
                 });
 
             modelBuilder.Entity("proiect_mari_claudiu.Models.Masina", b =>
@@ -133,6 +191,21 @@ namespace proiect_mari_claudiu.Migrations
                     b.ToTable("TipMasina");
                 });
 
+            modelBuilder.Entity("proiect_mari_claudiu.Models.Inchiriere", b =>
+                {
+                    b.HasOne("proiect_mari_claudiu.Models.Client", "Client")
+                        .WithMany("Inchirieri")
+                        .HasForeignKey("ClientID");
+
+                    b.HasOne("proiect_mari_claudiu.Models.Masina", "Masina")
+                        .WithMany()
+                        .HasForeignKey("MasinaID");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Masina");
+                });
+
             modelBuilder.Entity("proiect_mari_claudiu.Models.Masina", b =>
                 {
                     b.HasOne("proiect_mari_claudiu.Models.Furnizor", "Furnizor")
@@ -165,6 +238,11 @@ namespace proiect_mari_claudiu.Migrations
                     b.Navigation("Masina");
 
                     b.Navigation("Tip");
+                });
+
+            modelBuilder.Entity("proiect_mari_claudiu.Models.Client", b =>
+                {
+                    b.Navigation("Inchirieri");
                 });
 
             modelBuilder.Entity("proiect_mari_claudiu.Models.Furnizor", b =>
