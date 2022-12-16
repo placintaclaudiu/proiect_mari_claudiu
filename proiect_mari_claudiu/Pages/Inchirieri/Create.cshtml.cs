@@ -29,8 +29,9 @@ namespace proiect_mari_claudiu.Pages.Inchirieri
                    x.ID,
                    MasinaFullName = x.Denumire + " - " + x.Model.NumeModel
                });
-        ViewData["ClientID"] = new SelectList(_context.Client, "ID", "NumeComplet");
-        ViewData["MasinaID"] = new SelectList(masinaList, "ID", "MasinaFullName");
+            ViewData["MasinaID"] = new SelectList(masinaList, "ID", "MasinaFullName");
+            ViewData["ClientID"] = new SelectList(_context.Client, "ID", "NumeComplet");
+        
             return Page();
         }
 

@@ -28,13 +28,13 @@ namespace proiect_mari_claudiu.Pages.Inchirieri
                 Inchiriere = await _context.Inchiriere
                 .Include(i => i.Masina)
                 .ThenInclude(b => b.Model)
-                .Include(i => i.Client)
+                .Include(i => i.Client).ToListAsync();
                 //.Select(x => new
-             //   {
-                   // x.ID,
-                  //  MasinaFullName = x.Masina.Denumire + " - " + x.Masina.Model.NumeModel
-               // })
-                .ToListAsync();
+                //   {
+                // x.ID,
+                //  MasinaFullName = x.Masina.Denumire + " - " + x.Masina.Model.NumeModel
+                // })
+
             }
         }
     }
